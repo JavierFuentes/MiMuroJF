@@ -1,0 +1,69 @@
+// Formato totalmente manual
+[
+    {
+        "statusData": [
+            {
+                "id": 277,
+                "date": 1409421319000,
+                "text": "Me dar�a un ba�o en la piscina!!!.",
+                "commentsCounter": 0,
+                "likesCounter": 5,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 19:55:19"
+            }
+        ]
+    },
+    {
+        "commentsData": [
+            [
+                {
+                    "id": 1,
+                    "date": 1409263200000,
+                    "text": "comentario 1",
+                    "dateString": "29-ago-2014 0:00:00",
+                    "authorNick": "Administrador",
+                    "statusId": 277
+                }
+            ]
+        ]
+    },
+    {
+        "likesData": [
+            {
+                "id": 50,
+                "date": 1409427311000,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:35:11",
+                "statusId": 277
+            },
+            {
+                "id": 49,
+                "date": 1409426947000,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:29:07",
+                "statusId": 277
+            },
+            {
+                "id": 48,
+                "date": 1409426946000,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:29:06",
+                "statusId": 277
+            },
+            {
+                "id": 47,
+                "date": 1409422356000,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 20:12:36",
+                "statusId": 277
+            },
+            {
+                "id": 46,
+                "date": 1409422353000,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 20:12:33",
+                "statusId": 277
+            }
+        ]
+    }
+]

@@ -1,0 +1,68 @@
+<div class="container panel-body">
+    <div class="text-right">
+        <!--<i class="fa fa-link fa-2x"></i>-->
+        Nuevo Usuario
+        <button type="checkbox" class="btn fa fa-paperclip fa-2x" title="Nuevo Usuario" ng-click="setNewUserMode()"></button>
+    </div>
+
+    <h3 class="text-center text-info">Introduzca sus credenciales</h3>
+
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8" ng-controller="loginCtrl">
+
+        <!-- Mensaje de validando -->
+        <div class="alert alert-warning" ng-show="isLoading && !loginError">
+            {{loginMessage}}
+        </div>
+
+        <!-- Mensaje de error -->
+        <div class="alert alert-danger alert-dismissable" ng-show="loginError">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true"-->
+            <!--ng-click="loginError = false">&times;</button>-->
+            {{loginMessage}}
+        </div>
+
+        <form ng-submit="loginSubmit()" name="loginForm">
+
+            <div class="input-group margin-bottom-sm">
+                <span class="input-group-addon">
+                    <i class="fa fa-envelope-o fa-fw" title="e-mail de registro"></i>
+                </span>
+                <input class="form-control" type="email" placeholder="e-mail de registro" autofocus required
+                       ng-model="credentials.data_mail">
+            </div>
+
+            <div class="input-group" ng-show="newUserMode">
+                <span class="input-group-addon">
+                    <i class="fa fa-user fa-fw" title="alias"></i>
+                </span>
+                <input class="form-control" type="text" placeholder="alias" required
+                       ng-model="credentials.data_nick">
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-key fa-fw" title="password ficticio"></i>
+                </span>
+                <input class="form-control" type="password" placeholder="password ficticio" required
+                       ng-model="credentials.data_pass">
+            </div>
+            <br>
+
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit"
+                        ng-disabled="loginForm.$invalid">
+                    <i class="fa fa-sign-in"></i>
+                    <div ng-show="!newUserMode">Entrar</div>
+                    <div ng-show="newUserMode">Registrar</div>
+                </button>
+            </div>
+        </form>
+
+        <!-- Formulario de login : se convierte el camelcase con guiones-->
+        <!--<login-form></login-form>-->
+
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+

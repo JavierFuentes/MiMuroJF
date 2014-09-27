@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xml:lang="es" ng-app="myApp">
+<head>
+
+    <title>Mi MURO</title>
+    <meta name="author" content="Javier Fuentes">
+    <link rel="icon" href="./assets/muro1.jpg">
+    <link rel="stylesheet" href="./js-lib/bootstrap-3.1.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./assets/font-awesome-4.2.0/css/font-awesome.css">
+</head>
+<body>
+
+<!--<div class="text-center text-info">-->
+<!--<a href="#/status/list">-->
+<!--<img src="./assets/muro1.jpg" height="95"/>-->
+<!--</a>-->
+<!--<br/>-->
+
+<!--<h1 class="text-center col-xs-12">-->
+<!--Mi MURO-->
+<!--</h1>-->
+<!--</div>-->
+
+<div ng-view></div>
+
+<footer class="text-center">
+    <script src="./components/myUtilities.js"></script>
+    <script>
+        document.write(companyData.getCopyright())
+    </script>
+</footer>
+
+<!-- Cargamos todas las librerias javascript -->
+<div>
+    <script src="./js-lib/jquery-2.1.1/jquery-2.1.1.js"></script>
+    <!--<script src="./js-lib/jquery.timeago.js"></script>-->
+
+    <script src="./js-lib/bootstrap-3.1.1-dist/js/bootstrap.js"></script>
+
+    <script src="./js-lib/underscore-1.6.0.js"></script>
+    <script src="./js-lib/date.js"></script>
+
+    <script src="./js-lib/angular-1.2.17/angular.js"></script>
+    <script src="./js-lib/angular-1.2.17/angular-route.js"></script>
+
+    <script src="./js-lib/angular-timeago.js"></script>
+
+    <script src="./components/myApp.js"></script>
+    <script src="./components/appServerLocation.js"></script>
+
+    <!--<script src="./login/loginApp.js"></script>-->
+    <script src="./login/loginCtrl.js"></script>
+    <script src="./login/loginServices.js"></script>
+    <script src="./components/directives/login/LoginDirective.js"></script>
+
+    <script src="./mimuro/status/statusListCtrl.js"></script>
+    <script src="./mimuro/status/statusDetailCtrl.js"></script>
+    <script src="./mimuro/status/statusServices.js"></script>
+
+
+</div>
+
+</body>
+</html>

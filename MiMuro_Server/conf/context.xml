@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <!-- Allows us to use system properties as variables in this configuration file -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:main.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName">
+            <value>${datasource.driver}</value>
+        </property>
+        <property name="url">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="username">
+            <value>${datasource.db.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.db.password}</value>
+        </property>
+        <property name="testOnBorrow">
+            <value>true</value>
+        </property>
+        <property name="validationQuery">
+            <value>select 1</value>
+        </property>
+    </bean>
+
+    <!-- Hibernate SessionFactory definition -->
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect.classname}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.use_sql_comments">false</prop>
+                <prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.query.substitutions">true 1, false 0</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+            </props>
+        </property>
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>spy.social.model.vo</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Hibernate templates definition -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref local="sessionFactory"/>
+        </property>
+        <property name="flushModeName">
+            <value>FLUSH_AUTO</value>
+        </property>
+        <property name="allowCreate">
+            <value>true</value>
+        </property>
+        <property name="alwaysUseNewSession">
+            <value>false</value>
+        </property>
+        <property name="cacheQueries">
+            <value>false</value>
+        </property>
+        <property name="queryCacheRegion">
+            <value>dcpQCR</value>
+        </property>
+        <property name="maxResults">
+            <value>10000</value>
+        </property>
+        <property name="fetchSize">
+            <value>10000</value>
+        </property>
+    </bean>
+
+    <!-- Local transaction manager for a single JDBC source by ussing Hibernate -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref local="sessionFactory"/>
+        </property>
+    </bean>
+
+    <!--
+        <bean id="cleaningTechnicalAssistantServices" class="com.grupoasv.controllers.CleaningTechnicalAssistantServices">
+        </bean>
+    -->
+
+    <bean id="userDAO"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref local="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref local="userDAOTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="makePersistent">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED, readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="userDAOTarget"
+          class="spy.social.model.dao.impl.UserDAOImpl">
+        <qualifier value="target"/>
+        <property name="hibernateTemplate">
+            <ref local="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="statusDAO"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref local="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref local="statusDAOTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="makePersistent">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED, readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="statusDAOTarget"
+          class="spy.social.model.dao.impl.StatusDAOImpl">
+        <qualifier value="target"/>
+        <property name="hibernateTemplate">
+            <ref local="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="commentDAO"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref local="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref local="commentDAOTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="makePersistent">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED, readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="commentDAOTarget"
+          class="spy.social.model.dao.impl.CommentDAOImpl">
+        <qualifier value="target"/>
+        <property name="hibernateTemplate">
+            <ref local="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="likeEntryDAO"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref local="transactionManager"/>
+        </property>
+        <property name="target">
+            <ref local="likeEntryDAOTarget"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="makePersistent">PROPAGATION_REQUIRED</prop>
+                <prop key="find*">PROPAGATION_REQUIRED, readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="likeEntryDAOTarget"
+          class="spy.social.model.dao.impl.LikeEntryDAOImpl">
+        <qualifier value="target"/>
+        <property name="hibernateTemplate">
+            <ref local="hibernateTemplate"/>
+        </property>
+    </bean>
+
+
+    <context:component-scan base-package="spy.social"/>
+
+
+</beans>

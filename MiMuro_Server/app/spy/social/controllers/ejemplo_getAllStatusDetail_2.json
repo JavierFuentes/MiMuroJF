@@ -1,0 +1,59 @@
+// Formato automático
+[
+    {
+        "id": 277,
+        "date": 1409421319000,
+        "text": "Me dar�a un ba�o en la piscina!!!.",
+        "commentsCounter": 1,
+        "likesCounter": 5,
+        "commentList": [
+            {
+                "id": 1,
+                "date": 1409263200000,
+                "text": "comentario 1",
+                "authorNick": "Administrador",
+                "statusId": 277,
+                "dateString": "29-ago-2014 0:00:00"
+            }
+        ],
+        "likeEntryList": [
+            {
+                "id": 50,
+                "date": 1409427311000,
+                "statusId": 277,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:35:11"
+            },
+            {
+                "id": 49,
+                "date": 1409426947000,
+                "statusId": 277,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:29:07"
+            },
+            {
+                "id": 48,
+                "date": 1409426946000,
+                "statusId": 277,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 21:29:06"
+            },
+            {
+                "id": 47,
+                "date": 1409422356000,
+                "statusId": 277,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 20:12:36"
+            },
+            {
+                "id": 46,
+                "date": 1409422353000,
+                "statusId": 277,
+                "userNick": "Administrador",
+                "dateString": "30-ago-2014 20:12:33"
+            }
+        ],
+        "userNick": "Administrador",
+        "dateString": "30-ago-2014 19:55:19"
+    }
+]

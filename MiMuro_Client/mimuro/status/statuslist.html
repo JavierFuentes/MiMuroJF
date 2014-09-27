@@ -1,0 +1,141 @@
+<header xmlns="http://www.w3.org/1999/html">
+    <div class="row text-center text-info h3">
+        <a href="#/status/list" title="Mi MURO">
+            <img src="./assets/muro1.jpg" height="95"/>
+        </a>
+
+        <div ng-show="userFiltered == ''">
+            <i class="fa fa-users"></i>
+            Muro General
+        </div>
+        <div ng-show="userFiltered != ''">
+            <i class="fa fa-user fa-fw"></i>
+            Muro de {{userFiltered}}
+        </div>
+    </div>
+</header>
+
+<div class="col-xs-12">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <!--<div class="text-right">-->
+        <!--<a class="btn-link" ng-click="getStatusByUser(cred_nick)">{{cred_nick}}</a>-->
+        <!--<a class="btn-link" ng-click="logOut()">-->
+        <!--<i class="fa fa-sign-out" title="Salir"></i>-->
+        <!--</a>-->
+        <!--</div>-->
+
+        <!-- Menú desplegable -->
+        <div class="text-right">
+            <div class="btn-group text-left">
+                <a class="btn btn-primary" ng-click="getStatusByUser(cred_nick)"><i
+                        class="fa fa-user fa-fw fa-2x"></i><span class="fa-2x">{{cred_nick}}</span></a>
+                <a class="btn btn-primary dropdown-toggle fa-2x" data-toggle="dropdown">
+                    <span class="fa fa-caret-down"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="btn-link" ng-click="getStatusByUser(cred_nick)">
+                        <i class="fa fa-home fa-2x"></i> Muro Personal
+                    </a></li>
+                    <li><a class="btn-link" href="#/status/list">
+                        <i class="fa fa-users fa-2x"></i> Muro General
+                    </a></li>
+                    <li class="divider"></li>
+                    <li><a class="btn-link" ng-click="logOut()">
+                        <i class="fa fa-sign-out fa-2x"></i> Salir
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <br>
+
+        <!-- Mensaje de error -->
+        <div class="alert alert-danger alert-dismissable" ng-show="responseError">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true"-->
+            <!--ng-click="responseError = false">&times;</button>-->
+            {{actionMessage}}
+        </div>
+
+        <!----- FORMULARIO ACTUALIZACIÓN DE ESTADO ----->
+        <div ng-show="userFiltered == ''">
+            <h4>Actualiza tu Estado</h4>
+
+            <form name="newStatusForm">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-comment-o fa-3x"></i>
+                    </span>
+                    <textarea rows="3" class="form-control"
+                              placeholder="El texto debe tener al menos 2 palabras y terminar en punto."
+                              autofocus="true"
+                              ng-model="newStatusText"/>
+                </div>
+                <br>
+                <button class="btn btn-primary btn-block btn-lg" ng-disabled="!newStatusOK()" ng-click="addStatus()">
+                    <i class="fa fa-floppy-o"></i>
+                    Guardar
+                </button>
+            </form>
+        </div>
+        <br>
+
+        <!----- LISTA DE ESTADOS ----->
+        <div class="col-xs-6">
+            <h4 ng-show="userFiltered == ''">Lo que la gente cuenta:</h4>
+            <h4 ng-show="userFiltered != ''">Lo que {{userFiltered}} cuenta:</h4>
+        </div>
+        <div class="col-xs-6 text-right">
+            <i class="fa fa-sort-amount-desc fa-2x" title="Ordenar por Fecha/Hora" ng-click="setOrder()"
+               ng-show="checkOrder"></i>
+            <i class="fa fa-bars fa-2x" title="Ordenar por Relevancia" ng-click="setOrder()" ng-show="!checkOrder"></i>
+        </div>
+        <table class="table table-striped">
+            <tr ng-repeat="status in data_statusArray | orderBy:orderCriteria">
+                <td>
+                    <div>
+                        <i class="fa fa-comments-o fa-3x"></i>
+                        <small>## {{status.id}} ##<br></small>
+
+                        <span class="text-right h5">
+                            <i class="fa fa-clock-o"></i>
+                            <!--<span title="{{status.dateString}}">{{status.dateString | timeAgo }}</span>-->
+                            <time-ago from-time="{{status.dateString}}"
+                                      title="{{getLocaleDateString(status.date)}}">
+                                {{status.dateString}}
+                            </time-ago>
+
+                            <a class="btn-link" ng-click="getStatusByUser(status.userNick)">{{status.userNick}}</a>
+                        </span>
+                    </div>
+                    <br>
+
+                    <div class="text-left h4 text-warning">
+                        {{status.text}}
+                    </div>
+
+                    <div class="text-right h3">
+                        <a class="btn-link" ng-click="goStatusDetail(status.id)">{{status.commentsCounter}}
+                            <i class="fa fa-comments" title="Comentarios"></i>
+                        </a>
+                        &nbsp;
+
+                        <a class="btn-link" ng-click="goStatusDetail(status.id)">{{status.likesCounter}}
+                            <i class="fa fa-thumbs-up" title="Me Gusta"></i>
+                        </a>
+                        &nbsp;
+                        <a class="btn-link" ng-click="addLike(status.id)">
+                            <i class="fa fa-plus-circle" title="+1"></i>
+                        </a>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<!--debug-->
+<!--<div class="small">-->
+<!--{{data_statusArray[0]}}<br><br>-->
+<!--</div>-->
+<!--debug-->

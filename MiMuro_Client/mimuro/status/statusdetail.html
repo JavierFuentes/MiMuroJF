@@ -1,0 +1,181 @@
+<header>
+    <div class="row text-center text-info h3">
+        <a href="#/status/list" title="Mi MURO">
+            <img src="./assets/muro1.jpg" height="95"/>
+        </a>
+
+        <div ng-show="statusFiltered != ''">
+            <i class="fa fa-user fa-fw"></i>
+            <a class="btn-link"
+               ng-click="getStatusByUser(allJSONdata.userNick)">{{allJSONdata.userNick}}</a> <br>
+            <i class="fa fa-clock-o"></i>
+            <time-ago from-time="{{allJSONdata.dateString}}" title="{{getLocaleDateString(allJSONdata.date)}}">
+                {{allJSONdata.dateString}}
+            </time-ago>
+
+            escribió...
+        </div>
+    </div>
+</header>
+
+<div class="col-xs-12">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+        <!--<div class="text-right">-->
+        <!--<a class="btn-link" ng-click="getStatusByUser(cred_nick)">{{cred_nick}}</a>-->
+        <!--<a class="btn-link" ng-click="logOut()">-->
+        <!--<i class="fa fa-sign-out" title="Salir"></i>-->
+        <!--</a>-->
+        <!--</div>-->
+
+        <!-- Menú desplegable -->
+        <div class="text-right">
+            <div class="btn-group text-left">
+                <a class="btn btn-primary" ng-click="getStatusByUser(cred_nick)"><i class="fa fa-user fa-fw fa-2x"></i><span class="fa-2x">{{cred_nick}}</span></a>
+                <a class="btn btn-primary dropdown-toggle fa-2x" data-toggle="dropdown">
+                    <span class="fa fa-caret-down"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="btn-link" ng-click="getStatusByUser(cred_nick)">
+                        <i class="fa fa-home fa-2x"></i> Muro Personal
+                    </a></li>
+                    <li><a class="btn-link" href="#/status/list">
+                        <i class="fa fa-users fa-2x"></i> Muro General
+                    </a></li>
+                    <li class="divider"></li>
+                    <li><a class="btn-link" ng-click="logOut()">
+                        <i class="fa fa-sign-out fa-2x"></i> Salir
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <br>
+
+        <!-- Mensaje de error -->
+        <div class="alert alert-danger alert-dismissable" ng-show="responseError">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-hidden="true"-->
+            <!--ng-click="responseError = false">&times;</button>-->
+            {{actionMessage}}
+        </div>
+
+        <!----- FICHA DEL ESTADO ----->
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <i class="fa fa-comments-o fa-3x"></i>
+                    <small>## {{statusFiltered}} ##<br></small>
+
+                    <div class="text-left text-warning h4">
+                        {{allJSONdata.text}}
+                    </div>
+
+                    <div class="text-right h3">
+                        {{allJSONdata.commentsCounter}}
+                        <i class="fa fa-comments" title="Comentarios"></i>
+                        &nbsp;
+
+                        {{allJSONdata.likesCounter}}
+                        <i class="fa fa-thumbs-up" title="Me Gusta"></i>
+                        &nbsp;
+
+                        <a class="btn-link" ng-click="addLike(allJSONdata.id)">
+                            <i class="fa fa-plus-circle" title="+1"></i>
+                        </a>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+
+
+        <!----- FORMULARIO NUEVO COMENTARIO ----->
+        <!--<div ng-show="userFiltered == ''">-->
+        <h4>Añade un nuevo comentario:</h4>
+
+        <form name="newCommentForm">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-comment fa-3x"></i>
+                </span>
+                <textarea rows="3" class="form-control"
+                          placeholder="El texto debe tener al menos 2 palabras y terminar en punto." autofocus="true"
+                          ng-model="newCommentText"/>
+            </div>
+            <br>
+            <button class="btn btn-primary btn-block btn-lg" ng-disabled="!newCommentOK()" ng-click="addComment()">
+                <i class="fa fa-floppy-o"></i>
+                Guardar
+            </button>
+
+        </form>
+        <!--</div>-->
+        <br>
+
+        <!----- LISTA DE COMENTARIOS ----->
+        <div class="col-xs-9">
+            <h4>Lo que opina la gente de lo que ha dicho {{allJSONdata.userNick}}</h4>
+            <table class="table table-striped">
+                <tr ng-repeat="comment in data_commentsArray">
+                    <td>
+                        <div>
+                            <i class="fa fa-comments fa-3x"></i>
+                            <i class="fa fa-clock-o"></i>
+                            <span class="text-right h5">
+
+                                <time-ago from-time="{{comment.dateString}}"
+                                          title="{{getLocaleDateString(comment.date)}}">
+                                    {{comment.dateString}}
+                                </time-ago>
+
+                                <a class="btn-link"
+                                   ng-click="getStatusByUser(comment.authorNick)">{{comment.authorNick}}</a>
+                            </span>
+                        </div>
+                        <br>
+
+                        <div class="text-left text-warning h4">
+                            {{comment.text}}
+                        </div>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+
+        <!----- LISTA DE LIKES ----->
+        <div class="col-xs-3">
+            <h4>A esta gente le ha gustado lo que decía {{allJSONdata.userNick}}</h4>
+            <table class="table table-striped">
+                <tr ng-repeat="like in data_likesArray">
+                    <td>
+                        <div>
+                            <i class="fa fa-thumbs-up" title="Me Gusta"></i>
+                            <span class="text-right h5">
+                                <a class="btn-link" ng-click="getStatusByUser(like.userNick)">{{like.userNick}}</a>
+                                <br>
+                                <i class="fa fa-clock-o"></i>
+                                <time-ago from-time="{{like.dateString}}" title="{{getLocaleDateString(like.date)}}">
+                                    {{like.dateString}}
+                                </time-ago>
+                            </span>
+                        </div>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+
+<!-- debugg -->
+<!--<div class="small">-->
+<!--allJSONdata=<br>-->
+<!--{{allJSONdata}}<br><br>-->
+
+<!--data_commentsArray[0]=<br>-->
+<!--{{data_commentsArray[0]}}<br><br>-->
+
+<!--data_likesArray[0]=<br>-->
+<!--{{data_likesArray[0]}}<br><br>-->
+<!--</div>-->
+<!-- debugg -->
