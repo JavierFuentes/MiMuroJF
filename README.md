@@ -23,5 +23,5 @@ AngularJS Client
 Client-side of the application using AngularJS, Bootstrap and HTML5.
 Simulates a simple non-crypted login and session to access the front-app.
 
-Live Demo : http://mimurojf.tk
+Live Demo : [here](http://foobar.cf/chat)
 * Register a new non-real e-mail and password and access the app.
